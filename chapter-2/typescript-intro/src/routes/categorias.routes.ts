@@ -1,20 +1,22 @@
 import { Router } from "express"
 import { CategoriesRepository } from "../repositories/CategoriesRepository"
+import { CreateCategoryservices } from "../services/CreateCategoryServices"
 
 const categoriesRoutes = Router()
-const CategoriesRepositor = new CategoriesRepository()
+const categoriesRepository = new CategoriesRepository()
 
 
 categoriesRoutes.post("/", (request, response) => {
     const { name, description } = request.body
 
-    CategoriesRepositor.create({name, description})
-   // categories.push(category)
+    const createCategoryservices = new CreateCategoryservices(categoriesRepository)
+
+    createCategoryservices.execute({name, description})
     return response.status(201).send()
 })
 
 categoriesRoutes.get("/", (req, res) => {
-    const all = CategoriesRepositor.list()
+    const all = categoriesRepository.list()
     return res.json(all)
 })
 

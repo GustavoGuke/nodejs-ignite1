@@ -1,19 +1,14 @@
 import { Category } from "../model/category"
+import { ICategoryRepository, ICreateCategory } from "./ICategoryRepository"
 
-
-interface ICreateCategory {
-    name: string;
-    description: string;
-}
-
-class CategoriesRepository {
+class CategoriesRepository implements ICategoryRepository {
     private categories: Category[]
 
     constructor() {
         this.categories = []
     }
 
-    create({ name, description }: ICreateCategory) {
+    create({ name, description }:ICreateCategory) {
 
         const category = new Category()
         Object.assign(category, {
@@ -26,6 +21,11 @@ class CategoriesRepository {
 
     list(): Category[] {
         return this.categories;
+    }
+
+    findByName(name:string): Category {
+        const category = this.categories.find((category) => category.name === name)
+        return category
     }
 }
 
